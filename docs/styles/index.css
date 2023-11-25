@@ -1,22 +1,28 @@
 :root {
     --grey: #bdbdbd;
     --highlight-bar: #010175;
+    --diagram-bar-width: 7px;
+    --diagram-bar-height: 140px;
 }
 
 html, body {
-    padding: 20px;
-    width: 100%;
+    margin: 28px;
+    padding: 0;
 }
 
 #solarTermsDiagram {
+    width: 100%;
     overflow: scroll;
     white-space: nowrap;
+    overflow-y: hidden;
+    box-shadow: 2px 2px 4px 2px rgba(0, 0, 0, 0.3);
+    padding: 10px;
 }
 
 .diagram-day {
     display: inline-block;
-    width: 5px;
-    height: 100px;
+    width: var(--diagram-bar-width);
+    height: var(--diagram-bar-height);
     margin: 0;
     border-bottom: 1px solid var(--grey);
     border-left: 1px solid transparent;
@@ -24,10 +30,19 @@ html, body {
 
 .diagram-day-label {
     display: inline-block;
-    width: 5px;
+    width: var(--diagram-bar-width);
     min-height: 1px;
     margin: 0;
     border-left: 1px solid transparent;
+}
+
+.diagram-day-label.clickable {
+    cursor: pointer;
+}
+
+.diagram-day-label.clickable.highlight {
+    font-weight: bold;
+    text-decoration: underline;
 }
 
 .diagram-day.diagram-day-start {

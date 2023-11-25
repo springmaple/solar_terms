@@ -38,11 +38,20 @@ function renderSolarTermsDiagram(today, items) {
         const dayBar = $(`<div data-day="${day}" class="diagram-day-label"></div>`);
         parent2.append(dayBar);
     });
-    _.map(items, item => {
-        $(`.diagram-day-label[data-day='${item.startDate}']`).text(item.label);
+    _.map(items, (item, index) => {
+        $(`.diagram-day-label[data-day='${item.startDate}']`)
+            .text(item.label)
+            .addClass("clickable")
+            .data("solarTerms", [item, items[index + 1]])
+            .click(e => {
+                $(".diagram-day-label.clickable").removeClass("highlight");
+                const element = $(e.currentTarget);
+                element.addClass("highlight");
+                renderSolarTermInfo(...element.data("solarTerms"));
+            });
     });
 
-    //
+    // highlight
     const highlightDay = (() => {
         const sameDay = _.find(items, item => {
             return item.startDate === today.date;
@@ -54,27 +63,32 @@ function renderSolarTermsDiagram(today, items) {
     })();
     $(`.diagram-day[data-day='${highlightDay}']`).addClass('highlight');
 
-    //
-    let currentSolarTerm = "";
-    let nextSolarTerm = "";
-    for (let item of items) {
-        if (`${today.date} ${today.time}` > `${item.startDate} ${item.startTime}`) {
-            currentSolarTerm = item;
-            nextSolarTerm = items[items.indexOf(item) + 1];
-        } else {
+    // click on solar term of the day
+    let day = highlightDay;
+    for (let i in _.range(20)) {
+        const element = $(`.diagram-day-label[data-day='${day}']`);
+        if (element.hasClass('clickable')) {
+            element.click();
             break;
         }
+        day = DateUtil.subtractOneDay(day);
     }
-    renderSolarTermInfo(currentSolarTerm, nextSolarTerm);
 }
 
 async function renderSolarTermInfo(solarTerm, nextSolarTerm) {
     const solarTermPretty = moment(`${solarTerm.startDate} ${solarTerm.startTime}`).format(MomentPrettyFormat)
-    const nextSolarTermPretty = moment(`${nextSolarTerm.startDate} ${nextSolarTerm.startTime}`).format(MomentPrettyFormat)
+    const nextSolarTermPretty = (() => {
+        if (_.has(nextSolarTerm, "startDate"))
+            return moment(`${nextSolarTerm.startDate} ${nextSolarTerm.startTime}`).format(MomentPrettyFormat)
+    })();
 
     const parent = $("#solarTermInfo");
     parent.empty();
-    parent.append(`<h2>${solarTerm.label} <span>${solarTermPretty} - ${nextSolarTermPretty}</span></h2>`);
+    if (_.isNil(nextSolarTermPretty)) {
+        parent.append(`<h2>${solarTerm.label} <span>${solarTermPretty}</span></h2>`);
+    } else {
+        parent.append(`<h2>${solarTerm.label} <span>${solarTermPretty} - ${nextSolarTermPretty}</span></h2>`);
+    }
     parent.append(`<p></p>`)
     const wikiResp = await fetch(`https://zh.wikipedia.org/w/api.php?origin=*&action=query&prop=extracts&rawcontinue=1&format=json&exintro=&titles=${solarTerm.label}`)
     const wikiContent = await wikiResp.json();
