@@ -1,0 +1,38 @@
+:root {
+    --grey: #bdbdbd;
+    --highlight-bar: #010175;
+}
+
+html, body {
+    width: 100%;
+}
+
+#solarTermsDiagram {
+    overflow: scroll;
+    white-space: nowrap;
+}
+
+.diagram-day {
+    display: inline-block;
+    width: 5px;
+    height: 100px;
+    margin: 0;
+    border-bottom: 1px solid var(--grey);
+    border-left: 1px solid transparent;
+}
+
+.diagram-day-label {
+    display: inline-block;
+    width: 5px;
+    min-height: 1px;
+    margin: 0;
+    border-left: 1px solid transparent;
+}
+
+.diagram-day.diagram-day-start {
+    border-left: 1px solid var(--grey);
+}
+
+.diagram-day.highlight {
+    background-color: var(--highlight-bar);
+}
