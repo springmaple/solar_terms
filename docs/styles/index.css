@@ -20,6 +20,19 @@ html, body {
     padding: 10px;
 }
 
+.diagram-day-date {
+    display: inline-block;
+    visibility: hidden;
+    width: var(--diagram-bar-width);
+    min-height: 1px;
+    margin: 0;
+    border-left: 1px solid transparent;
+}
+
+.diagram-day-date.diagram-day-start {
+    visibility: visible;
+}
+
 .diagram-day {
     display: inline-block;
     position: relative;

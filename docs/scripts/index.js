@@ -21,9 +21,19 @@ function renderSolarTermTitle(today) {
 }
 
 function renderSolarTermsDiagram(today, items) {
+    const daysInYear = DateUtil.generateDays(2023);
+    // render diagram dates
+    const parent3 = $("#solarTermsDiagram .date");
+    _.map(daysInYear, day => {
+        const dayBar = $(`<div data-day="${day}" class="diagram-day-date">${moment(day).format("MM/DD")}</div>`);
+        parent3.append(dayBar);
+    });
+    _.map(items, item => {
+        $(`.diagram-day-date[data-day='${item.startDate}']`).addClass('diagram-day-start');
+    });
+
     // render diagram bars
     const parent = $("#solarTermsDiagram .diagram");
-    const daysInYear = DateUtil.generateDays(2023);
     _.map(daysInYear, day => {
         const dayBar = $(`<div data-day="${day}" class="diagram-day">
             <div data-day="${day}" class="diagram-day-length"></div>
