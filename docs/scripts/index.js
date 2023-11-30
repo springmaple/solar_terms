@@ -25,11 +25,20 @@ function renderSolarTermsDiagram(today, items) {
     const parent = $("#solarTermsDiagram .diagram");
     const daysInYear = DateUtil.generateDays(2023);
     _.map(daysInYear, day => {
-        const dayBar = $(`<div data-day="${day}" class="diagram-day"></div>`);
+        const dayBar = $(`<div data-day="${day}" class="diagram-day">
+            <div data-day="${day}" class="diagram-day-length"></div>
+        </div>`);
         parent.append(dayBar);
     });
     _.map(items, item => {
         $(`.diagram-day[data-day='${item.startDate}']`).addClass('diagram-day-start');
+    });
+
+    // render diagram bars day-length
+    const maxDay = Math.pow(_.max(_.map(daysInYear, day => DayLengths[day])), 10);
+    _.map(daysInYear, day => {
+        const height = Math.pow(DayLengths[day], 10) / maxDay * 50;
+        $(`.diagram-day-length[data-day="${day}"]`).css("height", height + "%");
     });
 
     // render diagram labels
@@ -61,7 +70,7 @@ function renderSolarTermsDiagram(today, items) {
         }
         return today.date;
     })();
-    $(`.diagram-day[data-day='${highlightDay}']`).addClass('highlight');
+    $(`.diagram-day-length[data-day='${highlightDay}']`).addClass('highlight');
 
     // click on solar term of the day
     let day = highlightDay;

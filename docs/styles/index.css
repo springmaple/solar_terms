@@ -1,5 +1,6 @@
 :root {
     --grey: #bdbdbd;
+    --light-grey: #e7e7e7;
     --highlight-bar: #010175;
     --diagram-bar-width: 7px;
     --diagram-bar-height: 140px;
@@ -21,11 +22,29 @@ html, body {
 
 .diagram-day {
     display: inline-block;
+    position: relative;
     width: var(--diagram-bar-width);
     height: var(--diagram-bar-height);
     margin: 0;
     border-bottom: 1px solid var(--grey);
     border-left: 1px solid transparent;
+}
+
+.diagram-day-length {
+    display: inline-block;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    background-color: var(--light-grey);
+}
+
+.diagram-day-length.highlight {
+    background-color: var(--highlight-bar);
+    height: 100% !important;
+}
+
+.diagram-day.diagram-day-start {
+    border-left: 1px solid var(--grey);
 }
 
 .diagram-day-label {
@@ -43,12 +62,4 @@ html, body {
 .diagram-day-label.clickable.highlight {
     font-weight: bold;
     text-decoration: underline;
-}
-
-.diagram-day.diagram-day-start {
-    border-left: 1px solid var(--grey);
-}
-
-.diagram-day.highlight {
-    background-color: var(--highlight-bar);
 }
