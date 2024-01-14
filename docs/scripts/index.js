@@ -1,7 +1,11 @@
 const MomentPrettyTitleFormat = "llll";
 const MomentPrettyFormat = "lll";
 $(document).ready(function () {
-    const items = _.map(TermsYears['2023'], term => {
+    const todayDate = DateUtil.getTodayDate();
+    const todayTime = DateUtil.getTodayTime();
+    const todayYear = DateUtil.getTodayYear();
+
+    const items = _.map(TermsYears[todayYear], term => {
         return {
             label: Terms[term['term']].label,
             startDate: term['start_date'],
@@ -9,8 +13,6 @@ $(document).ready(function () {
         }
     });
 
-    const todayDate = DateUtil.getTodayDate();
-    const todayTime = DateUtil.getTodayTime();
     renderSolarTermTitle(`${todayDate} ${todayTime}`);
     renderSolarTermsDiagram({date: todayDate, time: todayTime}, items);
 });
@@ -21,7 +23,7 @@ function renderSolarTermTitle(today) {
 }
 
 function renderSolarTermsDiagram(today, items) {
-    const daysInYear = DateUtil.generateDays(2023);
+    const daysInYear = DateUtil.generateDays(DateUtil.getTodayYear());
     // render diagram dates
     const parent3 = $("#solarTermsDiagram .date");
     _.map(daysInYear, day => {

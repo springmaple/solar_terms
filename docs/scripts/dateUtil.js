@@ -22,6 +22,11 @@ const DateUtil = {
         }
         return days;
     },
+
+    getTodayYear: function () {
+        return moment(this.getTodayDate()).format('YYYY');
+    },
+
     getTodayDate: function () {
         const today = new Date();
         const year = today.getFullYear();
