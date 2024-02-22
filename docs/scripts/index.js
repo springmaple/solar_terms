@@ -78,7 +78,7 @@ function renderSolarTermsDiagram(today, items) {
             return item.startDate === today.date;
         });
         if (!_.isEmpty(sameDay) && today.time < sameDay.startTime) {
-            return DateUtil.subtractOneDay(sameDay);
+            return DateUtil.subtractOneDay(sameDay.startDate);
         }
         return today.date;
     })();
